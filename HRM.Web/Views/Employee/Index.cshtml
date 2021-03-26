@@ -1,0 +1,48 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model IEnumerable<HRM.Models.Employee.EmployeeDetails>
+
+@{
+    Layout = "_PageLayout";
+    ViewData["Title"] = "Employee list";
+}
+
+<div class="row">
+    <p>
+        <a class="btn btn-info" asp-action="EmployeeForm"><i class="fa fa-plus"></i> Add employee</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr style="text-align:center">
+                <th>Name</th>
+                <th>Department</th>
+                <th>Designation
+                <th>Salary</th>
+                <th>Manager</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr style="text-align:center">
+                    <td>@item.Name</td>
+                    <td>@item.Department</td>
+                    <td>@item.Designation</td>
+                    <td>@item.Salary</td>
+                    <td>@item.Manager</td>
+                    <td>@item.Phone</td>
+                    <td>@item.Email</td>
+                    <td>
+                        <a asp-controller="Employee" asp-action="Edit" asp-route-id="@item.Id" class="btn-sm btn-outline-primary"><i class="fa fa-pencil-alt"></i></a> |
+                        <a asp-controller="Employee" asp-action="Delete" asp-route-id="@item.Id" class="btn-sm btn-outline-danger"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @*onclick="confirm('Are yoou sure you want to delete?');"*@
+
+</div>
