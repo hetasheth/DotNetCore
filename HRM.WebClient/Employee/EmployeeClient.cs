@@ -12,11 +12,18 @@ namespace HRM.WebClient.Employee
     {
         private readonly string apiBaseUrl;
 
+        /// <summary>
+        /// Constructor to set base api url
+        /// </summary>
         public EmployeeClient()
         {
             apiBaseUrl = "https://localhost:44339/api/EmployeeAPI";
         }
 
+        /// <summary>
+        /// Http client to call get api and return employee list
+        /// </summary>
+        /// <returns></returns>
         public List<EmployeeDetails> GetEmployees()
         {
             List<EmployeeDetails> list = new List<EmployeeDetails>();
@@ -35,6 +42,11 @@ namespace HRM.WebClient.Employee
             return list;
         }
 
+        /// <summary>
+        /// Http client to call get by id api and return employee
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public EmployeeDetails GetEmployeeById(int id)
         {
             EmployeeDetails employee = new EmployeeDetails();
@@ -53,6 +65,11 @@ namespace HRM.WebClient.Employee
             return employee;
         }
 
+        /// <summary>
+        /// Http client to call post method
+        /// </summary>
+        /// <param name="employeeDetails"></param>
+        /// <returns></returns>
         public bool AddEmployee(EmployeeDetails employeeDetails)
         {
             using (HttpClient client = new HttpClient())
@@ -68,6 +85,11 @@ namespace HRM.WebClient.Employee
             return false;
         }
 
+        /// <summary>
+        /// Http client to call put method
+        /// </summary>
+        /// <param name="employeeDetails"></param>
+        /// <returns></returns>
         public bool UpdateEmployee(EmployeeDetails employeeDetails)
         {
             using (HttpClient client = new HttpClient())
@@ -84,6 +106,11 @@ namespace HRM.WebClient.Employee
             return false;
         }
 
+        /// <summary>
+        /// Http client to call delete method
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool DeleteEmployee(int id)
         {
             using (HttpClient client = new HttpClient())

@@ -15,16 +15,32 @@ namespace HRM.DAL.Repository
             _employeeContext = employeeContext;
         }
 
+
+        /// <summary>
+        /// Method to get list of all employees
+        /// </summary>
+        /// <returns></returns>
         public List<Employee> GetAllEmployees()
         {
             return _employeeContext.Employees.ToList();
         }
 
+        /// <summary>
+        /// Method to get employee by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Employee GetEmployee(long id)
         {
-            return _employeeContext.Employees.Where(x => x.Id == id).FirstOrDefault();
+            return _employeeContext.Employees.FirstOrDefault(x => x.Id == id);
         }
 
+
+        /// <summary>
+        /// Method for creating new employee
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         public bool AddEmployee(Employee employee)
         {
             _employeeContext.Employees.Add(employee);
@@ -34,9 +50,15 @@ namespace HRM.DAL.Repository
             return false;
         }
 
+
+        /// <summary>
+        /// Method for updating existing employee
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         public bool UpdateEmployee(Employee employee)
         {
-            Employee emp = _employeeContext.Employees.Where(x => x.Id == employee.Id).FirstOrDefault();
+            Employee emp = _employeeContext.Employees.FirstOrDefault(x => x.Id == employee.Id);
             if (emp != null)
             {
                 emp.Name = employee.Name;
@@ -54,6 +76,12 @@ namespace HRM.DAL.Repository
             return false;
         }
 
+
+        /// <summary>
+        /// Method for deleting employee by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool DeleteEmployee(long id)
         {
             Employee employee = _employeeContext.Employees.Find(id);

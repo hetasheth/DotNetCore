@@ -21,6 +21,7 @@ namespace HRM.Web.Controllers
             if(loginVM.EmailAddress=="admin@gmail.com" && loginVM.Password=="12345678")
             {
                 HttpContext.Session.SetString("UserId", loginVM.EmailAddress);
+                
                 return RedirectToAction("Index", "Employee");
             }
             return View("Login");
@@ -30,6 +31,12 @@ namespace HRM.Web.Controllers
         {
             HttpContext.Session.Clear();            
             return RedirectToAction("Login");
+        }
+
+        public IActionResult Dashboard()
+        {
+            ViewBag.username = HttpContext.Session.GetString("UserId");
+            return View();
         }
 
         public IActionResult Error()

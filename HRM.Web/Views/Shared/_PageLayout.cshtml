@@ -31,7 +31,10 @@
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto navbar-right-top">
                         <li class="nav-item dropdown nav-user">
-                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:20px">user<!-- <img src="assets/images/avatar-1.jpg" alt="" class="user-avatar-md rounded-circle"> --></a>
+                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:20px">
+                                <i class="fa fa-user"></i>
+                                <!-- <img src="assets/images/avatar-1.jpg" alt="" class="user-avatar-md rounded-circle"> -->
+                            </a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                 <a class="dropdown-item" asp-controller="Home" asp-action="Logout"><i class="fas fa-power-off mr-2"></i>Logout</a>
                             </div>
@@ -56,7 +59,7 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link active" asp-controller="Employee" asp-action="Index"><i class="fa fa-fw fa-users"></i>Employee list</a>
+                                <a class="nav-link" asp-controller="Employee" asp-action="Index"><i class="fa fa-fw fa-users"></i>Employee list</a>
                             </li>
                         </ul>
                     </div>

@@ -8,23 +8,34 @@ using HRM.Web.Models;
 using HRM.Web.Filters;
 using HRM.Models.Employee;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace HRM.Web.Controllers
 {
-    [ResponseHeaderFilter]  
+    [ResponseHeaderFilter]
     [AuthorizationFilter]
     public class EmployeeController : Controller
     {
         private readonly IEmployeeClient _employeeClient;
+        private readonly ILogger _logger;
 
-        public EmployeeController(IEmployeeClient employeeClient)
+        public EmployeeController(IEmployeeClient employeeClient, ILogger<EmployeeController> logger)
         {
             _employeeClient = employeeClient;
+            _logger = logger;
         }
-        
-        [ResponseCache(Duration =500)]
+
+        /// <summary>
+        /// Employee List page
+        /// </summary>
+        /// <returns></returns>
+        [ResponseCache(Duration = 500)]
+        [HttpGet]
         public IActionResult Index()
         {
+            ViewData["Time"] = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
+            _logger.LogInformation("Employee List");
             return View(_employeeClient.GetEmployees());
         }
 
@@ -33,48 +44,87 @@ namespace HRM.Web.Controllers
             return View(new EmployeeRequestVM());
         }
 
+        /// <summary>
+        /// Fill form data for update employee details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IActionResult Edit(int id)
         {
-            EmployeeRequestVM employeeRequestVM = new EmployeeRequestVM();
-            EmployeeDetails employeeDetails = _employeeClient.GetEmployeeById(id);
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<EmployeeDetails, EmployeeRequestVM>());
-            var mapper = new Mapper(config);
-            employeeRequestVM = mapper.Map<EmployeeRequestVM>(employeeDetails);
-            return View("EmployeeForm", employeeRequestVM);
+            try
+            {
+                EmployeeRequestVM employeeRequestVM = new EmployeeRequestVM();
+                EmployeeDetails employeeDetails = _employeeClient.GetEmployeeById(id);
+                var config = new MapperConfiguration(cfg => cfg.CreateMap<EmployeeDetails, EmployeeRequestVM>());
+                var mapper = new Mapper(config);
+                employeeRequestVM = mapper.Map<EmployeeRequestVM>(employeeDetails);
+                return View("EmployeeForm", employeeRequestVM);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Exception : " + ex.Message);
+                return View("EmployeeForm", new EmployeeRequestVM());
+            }
         }
 
+        /// <summary>
+        /// Post/Put method for add/update employee
+        /// </summary>
+        /// <param name="employeeRequestVM"></param>
+        /// <returns></returns>
         [ValidateAntiForgeryToken]
         public IActionResult CreateOrEdit(EmployeeRequestVM employeeRequestVM)
         {
-            if(ModelState.IsValid)
+            try
             {
-                var config = new MapperConfiguration(cfg => cfg.CreateMap<EmployeeRequestVM, EmployeeDetails>());
-                var mapper = new Mapper(config);
-                EmployeeDetails employeeDetails = mapper.Map<EmployeeDetails>(employeeRequestVM);
-                bool result = false;
-                if(employeeRequestVM.Id==0)
+                if (ModelState.IsValid)
                 {
-                    result = _employeeClient.AddEmployee(employeeDetails);
+                    var config = new MapperConfiguration(cfg => cfg.CreateMap<EmployeeRequestVM, EmployeeDetails>());
+                    var mapper = new Mapper(config);
+                    EmployeeDetails employeeDetails = mapper.Map<EmployeeDetails>(employeeRequestVM);
+                    bool result = false;
+                    if (employeeRequestVM.Id == 0)
+                    {
+                        result = _employeeClient.AddEmployee(employeeDetails);
+                    }
+                    else
+                    {
+                        result = _employeeClient.UpdateEmployee(employeeDetails);
+                    }
+                    if (result == true)
+                        return RedirectToAction("Index");
                 }
-                else
-                {
-                    result = _employeeClient.UpdateEmployee(employeeDetails);
-                }
-                if (result == true)
-                    return RedirectToAction("Index");
+                return View("Error", "Shared");
             }
-            return View("Error","Shared");
+            catch (Exception ex)
+            {
+                _logger.LogError("Exception : " + ex.Message);
+                return View("Error", "Shared");
+            }
         }
 
+        /// <summary>
+        /// Delete method 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IActionResult Delete(int id)
         {
-            if(id!=0)
+            try
             {
-                bool result = _employeeClient.DeleteEmployee(id);
-                if(result==true)
-                    return RedirectToAction("Index");
+                if (id != 0)
+                {
+                    bool result = _employeeClient.DeleteEmployee(id);
+                    if (result == true)
+                        return RedirectToAction("Index");
+                }
+                return View("Error", "Shared");
             }
-            return View("Error", "Shared");
+            catch (Exception ex)
+            {
+                _logger.LogError("Exception : " + ex.Message);
+                return View("Error", "Shared");
+            }
         }
     }
 }

@@ -20,6 +20,10 @@ namespace HRM.WebAPI.Controllers
             _employeeManager = employeeManager;
         }
 
+        /// <summary>
+        /// Get API : /api/Employee
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Get()
         {
@@ -27,6 +31,11 @@ namespace HRM.WebAPI.Controllers
             return Ok(lst);
         }
 
+        /// <summary>
+        /// Get by id API : /api/Employee/1
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(long id)
         {
@@ -38,6 +47,11 @@ namespace HRM.WebAPI.Controllers
             return Ok(employee);
         }
 
+        /// <summary>
+        /// Post API : /api/Employee
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Post([FromBody] EmployeeDetails employee)
         {
@@ -52,6 +66,11 @@ namespace HRM.WebAPI.Controllers
                 return NoContent();
         }
 
+        /// <summary>
+        /// Put API : /api/Employee
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         [HttpPut]
         public IActionResult Put([FromBody] EmployeeDetails employee)
         {
@@ -66,6 +85,11 @@ namespace HRM.WebAPI.Controllers
                 return NoContent();
         }
 
+        /// <summary>
+        /// Delete API : /api/Employee/1
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {

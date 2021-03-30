@@ -28,17 +28,7 @@ namespace HRM.Web.Filters
                 }));
 
                 }
-                else
-                {
-                    context.Result = new RedirectToRouteResult
-               (
-               new RouteValueDictionary(new
-               {
-                   action = "Index",
-                   controller = "Employee"
-               }));
-
-                }
+                
             }
             else
             {

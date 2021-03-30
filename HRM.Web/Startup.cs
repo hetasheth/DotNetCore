@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using HRM.WebClient.Employee;
 using HRM.Web.Middlewares;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace HRM.Web
 {
@@ -35,6 +36,8 @@ namespace HRM.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseResponseCaching();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -49,7 +52,7 @@ namespace HRM.Web
             app.UsePageResponseMiddleware();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseResponseCaching();
+            
             app.UseRouting();
 
             app.UseAuthorization();
